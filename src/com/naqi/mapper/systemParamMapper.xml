@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.naqi.mapper.SystemParamMapper">
+	
+	<insert id="save" parameterType="SystemParam" useGeneratedKeys="true" keyProperty="id"> 
+		INSERT INTO `t_system_param` (`id`, `paramKey`, `value`, `content`) VALUES (#{id}, #{paramKey}, #{value}, #{content})
+	</insert>
+	
+	<update id="update" parameterType="SystemParam">
+		update t_system_param set  `paramKey` = #{paramKey}, `value`= #{value}, , `content` = #{content})
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from t_system_param where id=#{id}
+	</delete>
+	
+	<select id="findAll" resultType="SystemParam">
+		select * from t_system_param
+	</select>
+	
+</mapper>

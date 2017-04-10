@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.naqi.mapper.ServerMapper">
+	
+	<insert id="save" parameterType="Server" useGeneratedKeys="true" keyProperty="id"> 
+		insert into t_server(serverName,password) 
+			values(#{serverName},#{password})
+	</insert>
+	
+	<update id="update" parameterType="Server">
+		update t_server set serverName=#{serverName},password=#{password} where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from t_server where id=#{id}
+	</delete>
+	
+	 <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->  
+	<select id="findById" parameterType="int" resultType="Server">
+		select * from t_server where id=#{id} 
+	</select>
+
+	<select id="findByType" parameterType="int" resultType="Server">
+		select * from t_server where type=#{type} 
+	</select>
+	
+	<select id="findAll" resultType="Server">
+		select * from t_server
+	</select>
+	
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<import resource="classpath:mercury-context.xml" />
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+	<!-- 注解扫描包 -->
+	<context:component-scan base-package="com.naqi" />
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IProcessExtension" />
+		<property name="extensionInstance" ref="LoginProcess"/>
+	</bean>
+	
+		<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IProcessExtension" />
+		<property name="extensionInstance" ref="ChuPaiProcess"/>
+	</bean>
+	
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IProcessExtension" />
+		<property name="extensionInstance" ref="GangProcess"/>
+	</bean>
+	
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IProcessExtension" />
+		<property name="extensionInstance" ref="GuoPaiProcess"/>
+	</bean>
+	
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IProcessExtension" />
+		<property name="extensionInstance" ref="HuPaiProcess"/>
+	</bean>
+	
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IProcessExtension" />
+		<property name="extensionInstance" ref="PengProcess"/>
+	</bean>			
+
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IProcessExtension" />
+		<property name="extensionInstance" ref="ReadyProcess"/>
+	</bean>			
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ITingExtension" />
+		<property name="extensionInstance" ref="Hu7Pairs"/>
+		<property name="priority" value="1"/>
+	</bean>
+	
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ITingExtension" />
+		<property name="extensionInstance" ref="YiTiaoLong"/>
+		<property name="priority" value="2"/>
+	</bean>
+	
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ITingExtension" />
+		<property name="extensionInstance" ref="DuiDuiHu"/>
+		<property name="priority" value="3"/>
+	</bean>
+	
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ITingExtension" />
+		<property name="extensionInstance" ref="JiaHu"/>
+		<property name="priority" value="4"/>
+	</bean>
+
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.IGameExtension" />
+		<property name="extensionInstance" ref="GameTickGuo"/>
+	</bean>
+</beans>

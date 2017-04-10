@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.naqi.mapper.UserMapper">
+	
+	<insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id"> 
+		INSERT INTO `t_user` (`account`, `name`, `sex`, `headimg`) VALUES (#{account}, #{name}, #{sex}, #{headimg});
+	</insert>
+	
+	<update id="update" parameterType="User">
+		update t_user set name=#{name},sex=#{sex},headimg=#{headimg},level=#{level},exp=#{exp},coins=#{coins},gems=#{gems},roomId=#{roomId},history=#{history} where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from t_user where id=#{id}
+	</delete>
+	
+	 <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->  
+	<select id="findById" parameterType="int" resultType="User">
+		select * from t_user where id=#{id} 
+	</select>
+
+	<select id="findByAccount" parameterType="String" resultType="User">
+		select * from t_user where account=#{account} 
+	</select>
+	
+</mapper>

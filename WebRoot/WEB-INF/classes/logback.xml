@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<!-- 
+	<turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
+			<MDCKey>user</MDCKey>
+			<Value>a168</Value>
+			<OnMatch>ACCEPT</OnMatch>
+	</turboFilter>
+	 -->
+	<!-- Appenders http://logback.qos.ch/manual/appenders.html -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>		
+			%date [%thread] %-5level %logger - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+	
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">	
+		
+		<Append>true</Append>
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/tangkx-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		
+		<BufferedIO>false</BufferedIO>
+		<ImmediateFlush>true</ImmediateFlush>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				%date [%thread] %-5level %logger{35} - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+	<root>
+		<level value="ERROR" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+	<logger name="com.naqi">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="com.http">
+		<level value="DEBUG" />
+	</logger>
+	
+	
+</configuration>
