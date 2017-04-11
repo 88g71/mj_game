@@ -26,6 +26,7 @@ public class HuPaiTest {
 		countMap.put(20, 1);
 		countMap.put(22, 1);
 		countMap.put(15, 2);
+		countMap.put(21, 1);
 		gameSeat.setCountMap(countMap);
 		
 		List<Integer> holds = new ArrayList<>();
@@ -42,10 +43,11 @@ public class HuPaiTest {
 		holds.add(28);
 		holds.add(15);
 		holds.add(15);
+		holds.add(21);
 		gameSeat.setHolds(holds);
 		
 		JiaHu jiaHu = new JiaHu();
-		boolean canHu = jiaHu.check(gameSeat, 21);
+		boolean canHu = jiaHu.check(gameSeat, -1);
 		System.out.println(canHu + " : " + gameSeat.getTingPai().getType());
 		DuiDuiHu duiduiHu = new DuiDuiHu();
 		canHu = duiduiHu.check(gameSeat, 29);

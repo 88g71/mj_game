@@ -23,6 +23,9 @@ public class Game {
 	
 	private GameTick gameTick;
 	
+	private HuPaiInfo huInfo;
+	
+	
 	public Game(RoomTable roomTable){
 		this.roomTable = roomTable;
 	}
@@ -135,6 +138,12 @@ public class Game {
 	}
 	public void setGameTick(GameTick gameTick) {
 		this.gameTick = gameTick;
+	}
+	public HuPaiInfo getHuInfo() {
+		return huInfo;
+	}
+	public void setHuInfo(HuPaiInfo huInfo) {
+		this.huInfo = huInfo;
 	}
 	
 }

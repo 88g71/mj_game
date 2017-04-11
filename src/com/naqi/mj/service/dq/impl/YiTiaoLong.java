@@ -1,5 +1,6 @@
 package com.naqi.mj.service.dq.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class YiTiaoLong implements ITingExtension{
 	
 	public boolean check(GameSeat gameSeat ,int pai){
 		List<Integer> holds = gameSeat.getHolds();
+		List<Integer> tempHolds = new ArrayList<>(holds);
 		logger.info("检测前--》玩家：{}，牌：{}",gameSeat.getTableSeat().getUserName(),holds);
 		//先加上要胡的牌
 		if(pai != -1){
@@ -78,8 +80,8 @@ public class YiTiaoLong implements ITingExtension{
 		}
 		if(pai != -1){
 			gameSeat.rePaiCount(pai,1);
-			holds.remove(holds.indexOf(pai));
 		}
+		holds = tempHolds;
 		logger.info("检测后--》玩家：{}，牌：{}",gameSeat.getTableSeat().getUserName(),holds);
 		return ret;
 	}

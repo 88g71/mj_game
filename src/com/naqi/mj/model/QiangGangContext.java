@@ -1,10 +1,10 @@
 package com.naqi.mj.model;
 
 public class QiangGangContext {
-	private GameSeat turnSeat;
-    private GameSeat seatData;
-    private int pai;
-    private boolean isValid;
+	private GameSeat turnSeat;	//
+    private GameSeat seatData;	//
+    private int pai;			//牌
+    private boolean isValid;	//
     
 	public GameSeat getTurnSeat() {
 		return turnSeat;

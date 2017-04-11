@@ -52,7 +52,7 @@ public class GameSeat {
     private boolean isGangHu = false;
     private int fan = 0;
     private int score = 0;
-    private HuPaiInfo huInfo = new HuPaiInfo();
+//    private HuPaiInfo huInfo = new HuPaiInfo();
     
     private int lastFangGangSeat = -1;
     //------------------------------------------------------------
@@ -278,12 +278,12 @@ public class GameSeat {
 	public void setScore(int score) {
 		this.score = score;
 	}
-	public  HuPaiInfo  getHuInfo() {
-		return huInfo;
-	}
-	public void setHuInfo(HuPaiInfo huInfo) {
-		this.huInfo = huInfo;
-	}
+//	public  HuPaiInfo  getHuInfo() {
+//		return huInfo;
+//	}
+//	public void setHuInfo(HuPaiInfo huInfo) {
+//		this.huInfo = huInfo;
+//	}
 	public int getLastFangGangSeat() {
 		return lastFangGangSeat;
 	}

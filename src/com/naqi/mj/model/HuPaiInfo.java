@@ -1,27 +1,33 @@
 package com.naqi.mj.model;
 
 public class HuPaiInfo {
+	//杠花
 	public static final int ACTION_GANG_HUA = 1;
+	//点杠花
 	public static final int ACTION_DIAN_GANG_HUA = 2;
+	//强杠花
 	public static final int ACTION_QIANG_GANG_HU = 3;
+	//被抢杠花
 	public static final int ACTION_BEI_QIANG_GANG = 4;
+	//自摸
 	public static final int ACTION_ZI_MO = 5;
+	//
 	public static final int ACTION_TYPE_HU = 6;
 	public static final int ACTION_TYP_GANG_PAO_HU = 7;
 	public static final int ACTION_TYPE_GANG_PAO = 8;
 	public static final int ACTION_TYPE_FANG_PAO = 9;
 	
-	private int pai;
-	private boolean huPai;
-	private int action;
-	private boolean zimo;
-	private int target;
-	private int fan;
-	private boolean gangHu;
-	private boolean qiangGangHu;
-	private String pattern;
-	private int score;
-	private int numofgen;
+	private int seatIndex;
+	private int pai = -1;			//胡牌
+	private boolean huPai;			//是否胡牌
+	private int action;				//胡牌类型
+	private boolean zimo;			//自摸
+	private int target = -1;		//点炮手
+	private int fan;				//翻倍
+	private boolean gangHu;			//杠花
+	private boolean qiangGangHu;	//抢杠
+	private String pattern;			//说明
+	private int score;				//分数
 
 	public int getAction() {
 		return action;
@@ -103,12 +109,12 @@ public class HuPaiInfo {
 		this.score = score;
 	}
 
-	public int getNumofgen() {
-		return numofgen;
+	public int getSeatIndex() {
+		return seatIndex;
 	}
 
-	public void setNumofgen(int numofgen) {
-		this.numofgen = numofgen;
+	public void setSeatIndex(int seatIndex) {
+		this.seatIndex = seatIndex;
 	}
 
 }

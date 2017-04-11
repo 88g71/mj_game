@@ -74,4 +74,8 @@
 		<property name="extensionPointName"	value="com.naqi.service.IGameExtension" />
 		<property name="extensionInstance" ref="GameTickGuo"/>
 	</bean>
+	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
+		<property name="extensionPointName"	value="com.naqi.service.ICalculateExtension" />
+		<property name="extensionInstance" ref="YiJiaFu"/>
+	</bean>
 </beans>

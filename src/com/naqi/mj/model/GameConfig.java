@@ -7,6 +7,7 @@ public class GameConfig {
 	private static final String MAX_FAN = "maxFan";
 	private static final String PLAYER_NUM = "playerNum";
 	private static final String MAX_QUAN = "maxQuan";
+	private static final String CALCULATE = "calculate";
 	
 	
 	private static final int DEFAULT_PLAYER_NUM = 4;
@@ -19,7 +20,8 @@ public class GameConfig {
 	}
 	
 	public int getBaseScore(){
-		return getIntValue(BASE_SCORE);
+		int baseScore = getIntValue(BASE_SCORE);
+		return baseScore == 0 ? 1 : baseScore;
 	}
 
 	public int getPlayerNum(){
@@ -38,6 +40,10 @@ public class GameConfig {
 	public int getMaxQuan() {
 		Object value =  getIntValue(MAX_QUAN);
 		return value == null ? 4 : Integer.parseInt(value.toString());
+	}
+
+	public int getCalculate() {
+		return getIntValue(CALCULATE);
 	}
 	
 }
