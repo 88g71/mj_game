@@ -1,4 +1,4 @@
-package com.test;
+package com.naqi.test;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;

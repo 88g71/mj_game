@@ -52,11 +52,11 @@
 		<property name="priority" value="1"/>
 	</bean>
 	
-	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
-		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ITingExtension" />
-		<property name="extensionInstance" ref="YiTiaoLong"/>
-		<property name="priority" value="2"/>
-	</bean>
+<!-- 	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init"> -->
+<!-- 		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ITingExtension" /> -->
+<!-- 		<property name="extensionInstance" ref="YiTiaoLong"/> -->
+<!-- 		<property name="priority" value="2"/> -->
+<!-- 	</bean> -->
 	
 	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
 		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ITingExtension" />
@@ -75,7 +75,7 @@
 		<property name="extensionInstance" ref="GameTickGuo"/>
 	</bean>
 	<bean class="com.gxlu.mercury.extension.core.BeanExtension"	init-method="init">
-		<property name="extensionPointName"	value="com.naqi.service.ICalculateExtension" />
+		<property name="extensionPointName"	value="com.naqi.mj.service.dq.ICalculateExtension" />
 		<property name="extensionInstance" ref="YiJiaFu"/>
 	</bean>
 </beans>

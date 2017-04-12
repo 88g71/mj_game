@@ -3,6 +3,7 @@ package com.naqi.mj.service.dq;
 import com.naqi.mj.model.Game;
 import com.naqi.mj.model.GameSeat;
 import com.naqi.mj.model.GameTick;
+import com.naqi.mj.model.Gang;
 import com.naqi.mj.model.RoomTable;
 import com.naqi.mj.model.TableSeat;
 import com.naqi.model.User;
@@ -48,7 +49,7 @@ public interface ITdhService {
 	 * @param numOfCnt
 	 * @param pai
 	 */
-	public void doGang(Game game, GameSeat turnSeat, GameSeat seatData, int gangtype,
+	public void doGang(Game game, GameSeat turnSeat, GameSeat seatData, Gang gang,
 			int numOfCnt, int pai);
 	/**
 	 * 胡牌

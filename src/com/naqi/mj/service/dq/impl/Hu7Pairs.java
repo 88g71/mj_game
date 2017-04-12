@@ -2,6 +2,8 @@ package com.naqi.mj.service.dq.impl;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.naqi.mj.model.GameSeat;
@@ -9,10 +11,11 @@ import com.naqi.mj.model.TingPai;
 import com.naqi.mj.service.dq.ITingExtension;
 @Service(value = "Hu7Pairs")
 public class Hu7Pairs implements ITingExtension{
-
+	private static Logger logger = LoggerFactory.getLogger(Hu7Pairs.class);
 	public boolean check(GameSeat gameSeat ,int pai){
+		logger.info("Hu7Pairs  用户名{}   牌 {}",gameSeat.getTableSeat().getUserName() , gameSeat.getHoldsPai());
 		Map<Integer,Integer> countMap = gameSeat.getCountMap();
-		if(gameSeat.getHolds().size() == 13){
+		if(gameSeat.getHoldsPai().size() == 13){
 	        int danPai = -1;
 	        //对子数量
 	        int pairCount = 0;

@@ -17,6 +17,7 @@ import com.naqi.mj.model.Game;
 import com.naqi.mj.model.GameAction;
 import com.naqi.mj.model.GameSeat;
 import com.naqi.mj.model.GameTick;
+import com.naqi.mj.model.Gang;
 import com.naqi.mj.model.HuPaiInfo;
 import com.naqi.mj.model.IGameConstant;
 import com.naqi.mj.model.QiangGangContext;
@@ -30,6 +31,7 @@ import com.naqi.mj.service.dq.ITingExtension;
 import com.naqi.model.User;
 import com.naqi.service.IRoomService;
 import com.naqi.service.IUserService;
+import com.naqi.test.PeiPai;
 
 @Service(value = "TdhService")
 public class TdhServiceImpl implements ITdhService {
@@ -74,6 +76,7 @@ public class TdhServiceImpl implements ITdhService {
 	    }
 
 	    Collections.shuffle(mahjongs);
+	    PeiPai.pei(mahjongs);
 	}
 	
 	/**
@@ -87,9 +90,8 @@ public class TdhServiceImpl implements ITdhService {
 	        return -1;
 	    }
 	    GameSeat gameSeat = game.getGameSeat(seatIndex);
-	    List<Integer> holds = gameSeat.getHolds();
 	    int pai = game.getMahjongs().get(game.getCurrentIndex());
-	    holds.add(pai);
+	    gameSeat.addholds(pai);
 
 	    //统计牌的数目 ，用于快速判定（空间换时间）
 	    gameSeat.addPaiCount(pai, 1);
@@ -254,7 +256,7 @@ public class TdhServiceImpl implements ITdhService {
 	private void sendOperations(Game game,GameSeat gameSeat,int pai) {
 	    if(hasOperations(gameSeat)){
 	        if(pai == -1){
-	            pai = gameSeat.getHolds().get(gameSeat.getHolds().size() - 1);
+	            pai = gameSeat.getHoldLast();
 	        }
 	        
 	        Map<String, Object> retData = new HashMap<String, Object>();
@@ -316,13 +318,13 @@ public class TdhServiceImpl implements ITdhService {
         checkCanAnGang(game,turnSeat);    
 	    
 	    //如果未胡牌，或者摸起来的牌可以杠，才检查弯杠
-	    if(turnSeat.getHolds().get(turnSeat.getHolds().size()-1) == pai){
+	    if(turnSeat.getHoldLast() == pai){
 	        checkCanWanGang(game,turnSeat,pai);    
 	    }
 	    
 
 	    //检查看是否可以胡
-	    checkCanHu(game,turnSeat,pai);
+	    checkCanHu(game,turnSeat,-1);
 
 	    //广播通知玩家出牌方
 	    turnSeat.setCanChuPai(true);
@@ -410,6 +412,7 @@ public class TdhServiceImpl implements ITdhService {
         Map<String,Object> retData = new HashMap<String,Object>();
         retData.put("results", result);
         retData.put("endinfo", endinfos);
+        retData.put("huinfo", game.getHuInfo());
         userService.broacastInRoom("game_over_push",retData,userId,true,game.getRoomTable());
         
 	}
@@ -422,13 +425,11 @@ public class TdhServiceImpl implements ITdhService {
 	 */
 	public void doGameOver(Game game,int userId ,boolean forceEnd){
 	    List<Map<String,Object>> results = new ArrayList<Map<String,Object>>();
-	    int[] dbresult = new int[]{0,0,0,0};
 
 	    if(game != null){
 	        if(!forceEnd){
 	            calculateResult(game);    
 	        }
-	        int i = 0;
 	        HuPaiInfo huInfo = game.getHuInfo();
 	        for(TableSeat tableSeat : game.getTableSeats()){
 	        	GameSeat gameSeat = tableSeat.getGameSeat();
@@ -447,17 +448,11 @@ public class TdhServiceImpl implements ITdhService {
 	            userRT.put("wangangs", gameSeat.getWangangs());
 	            userRT.put("diangangs", gameSeat.getDiangangs());
 	            userRT.put("angangs", gameSeat.getAngangs());
-	            userRT.put("holds", gameSeat.getHolds());
+	            userRT.put("holds", gameSeat.getHoldsPai());
 	            userRT.put("fan", gameSeat.getFan());
 	            userRT.put("score", gameSeat.getScore());
 	            userRT.put("totalscore", tableSeat.getScore());
-	            userRT.put("huinfo",huInfo );
-	            
 	            results.add(userRT);
-
-
-	            dbresult[i] = gameSeat.getScore();
-	            i++;
 	        }
 
 	        int old = game.getZhuangIndex();
@@ -559,7 +554,7 @@ public class TdhServiceImpl implements ITdhService {
 	        //开局时，通知前端必要的数据
 	        GameSeat s = seats.get(i).getGameSeat();
 	        //通知玩家手牌
-	        userService.sendMsg(s.getTableSeat().getUserId(),"game_holds_push",s.getHolds());
+	        userService.sendMsg(s.getTableSeat().getUserId(),"game_holds_push",s.getHoldsPai());
 	        //通知还剩多少张牌
 	        userService.sendMsg(s.getUserId(),"mj_count_push",numOfMJ);
 	        //通知还剩多少局
@@ -593,16 +588,16 @@ public class TdhServiceImpl implements ITdhService {
 	    }
 	    
 	    //从此人牌中扣除
-	    int index = gameSeat.getHolds().indexOf(pai);
+	    int index = gameSeat.getHoldsPai().indexOf(pai);
 	    if(index == -1){
-	    	logger.info("holds:{} , pai:{}" , gameSeat.getHolds(),pai);
+	    	logger.info("holds:{} , pai:{}" , gameSeat.getHoldsPai(),pai);
 	        return;
 	    }
 	    
 	    gameSeat.setCanChuPai(false);
 	    game.setChupaiCnt(game.getChupaiCnt() + 1);
 	    
-	    gameSeat.getHolds().remove(index);
+	    gameSeat.removeHolds(index);
 	    gameSeat.rePaiCount(pai, 1);
 	    game.setChuPai(pai);
 	    
@@ -709,12 +704,12 @@ public class TdhServiceImpl implements ITdhService {
 	    }
 
 	    for(int k = 0; k < 2; ++k){
-	        int index = seatData.getHolds().indexOf(pai);
+	        int index = seatData.getHoldsPai().indexOf(pai);
 	        if(index == -1){
 	            logger.error("can't find mj.");
 	            return;
 	        }
-	        seatData.getHolds().remove(index);
+	        seatData.removeHolds(index);
 	        seatData.getCountMap().put(pai,seatData.getPaiCount(pai) -1);
 	    }
 	    seatData.getPengs().add(pai);
@@ -761,11 +756,11 @@ public class TdhServiceImpl implements ITdhService {
 	 * @param pai
 	 */
 	@Override
-	public void doGang(Game game,GameSeat turnSeat,GameSeat seatData,int gangtype,int numOfCnt,int pai){
+	public void doGang(Game game,GameSeat turnSeat,GameSeat seatData,Gang gang,int numOfCnt,int pai){
 	    int seatIndex = seatData.getIndex();
 	    int gameTurn = turnSeat.getIndex();
 	    
-	    if(gangtype == IGameConstant.GANG_WAN_GANG){
+	    if(gang == Gang.WAN_GANG){
 	        int idx = seatData.getPengs().indexOf(pai);
 	        if(idx >= 0){
 	            seatData.getPengs().remove(idx);
@@ -776,33 +771,34 @@ public class TdhServiceImpl implements ITdhService {
 	    //扣掉手上的牌
 	    //从此人牌中扣除
 	    for(int i = 0; i < numOfCnt; ++i){
-	        int index = seatData.getHolds().indexOf(pai);
+	        int index = seatData.getHoldsPai().indexOf(pai);
 	        if(index == -1){
 	            logger.debug("can't find mj.");
 	            return;
 	        }
-	        seatData.getHolds().remove(index);
+	        seatData.removeHolds(index);
 	        seatData.rePaiCount(pai,1);
 	    }
 
 	    recordGameAction(game,seatData.getIndex(),GameAction.ACTION_GANG,pai);
 
 	    //记录下玩家的杠牌
-	    if(gangtype == IGameConstant.GANG_AN_GANG){
+	    if(gang == Gang.AN_GANG){
 	        seatData.getAngangs().add(pai);
 	        SeatAction ac = recordUserAction(game,seatData,SeatAction.TYPE_AN_GANG);
-	        ac.setScore( game.getConf().getBaseScore()*2);
+	        ac.setScore(2);
 	    }
-	    else if(gangtype == IGameConstant.GANG_DIAN_GANG){
+	    else if(gang == Gang.DIAN_GANG){
 	        seatData.getDiangangs().add(pai);
 	        SeatAction ac = recordUserAction(game,seatData,SeatAction.TYPE_DIAN_GANG,gameTurn);
-	        ac.setScore(game.getConf().getBaseScore()*2);
+	        ac.setScore(3);
 	        GameSeat fs = turnSeat;
 	        recordUserAction(game,fs,SeatAction.TYPE_FANG_GANG,seatIndex);
 	    }
-	    else if(gangtype == IGameConstant.GANG_WAN_GANG){
+	    else if(gang == Gang.WAN_GANG){
 	        seatData.getWangangs().add(pai);
-            recordUserAction(game,seatData,SeatAction.TYP_ZHUAN_SHOU_GANG);
+	        SeatAction ac = recordUserAction(game,seatData,SeatAction.TYP_ZHUAN_SHOU_GANG);
+	        ac.setScore(1);
 
 	    }
 
@@ -810,8 +806,16 @@ public class TdhServiceImpl implements ITdhService {
 	    gangReMap.put("userid", seatData.getUserId());
 	    //通知其他玩家，有人杠了牌
 	    Map<String, Object> gangRet = new HashMap<String,Object>();
+	    gangRet.put("userid", seatData.getUserId());
+	    gangRet.put("pai", pai);
+	    gangRet.put("gangtype", gang.getName());
+	    
 	    userService.broacastInRoom("gang_notify_push",gangRet,seatData.getUserId(),true,game.getRoomTable());
-
+	    
+	    
+	    moveToNextUser(game,seatIndex);
+	    doUserMoPai(game);
+	    seatData.setLastFangGangSeat(gameTurn);
 	}
 	
 	/**
@@ -856,16 +860,16 @@ public class TdhServiceImpl implements ITdhService {
 
 	    
 
-	    int gangtype = -1;
+	    Gang gang = null;
 	    //弯杠 去掉碰牌
 	    if(numOfCnt == 1){
-	        gangtype = IGameConstant.GANG_WAN_GANG;
+	    	gang = Gang.WAN_GANG;
 	    }
 	    else if(numOfCnt == 3){
-	        gangtype = IGameConstant.GANG_DIAN_GANG;
+	    	gang = Gang.DIAN_GANG;
 	    }
 	    else if(numOfCnt == 4){
-	        gangtype = IGameConstant.GANG_AN_GANG;
+	    	gang = Gang.AN_GANG;
 	    }
 	    else{
 	        logger.debug("invalid pai count.");
@@ -887,7 +891,7 @@ public class TdhServiceImpl implements ITdhService {
 	        }
 	    }
 	    
-	    doGang(game,turnSeat,seatData,gangtype,numOfCnt,pai);
+	    doGang(game,turnSeat,seatData,gang,numOfCnt,pai);
 	}
 	
 	/**
@@ -916,7 +920,7 @@ public class TdhServiceImpl implements ITdhService {
 	    seatData.setHued(true);
 	    int hupai = game.getChuPai();
 	    if( hupai == -1 ){
-	    	hupai = seatData.getHolds().get(seatData.getHolds().size() - 1);
+	    	hupai = seatData.getHoldsPai().get(seatData.getHoldsPai().size() - 1);
 	    }
 	    boolean isZimo = false;
 
@@ -925,6 +929,7 @@ public class TdhServiceImpl implements ITdhService {
 	    HuPaiInfo huPaiInfo = new HuPaiInfo();
 	    game.setHuInfo(huPaiInfo);
 	    huPaiInfo.setHuPai(true);
+	    huPaiInfo.setSeatIndex(seatIndex);
 	    int fan = 0;
 	    
 //	    QiangGangContext qiangGangContext = game.getQiangGangContext();
@@ -952,7 +957,7 @@ public class TdhServiceImpl implements ITdhService {
 //	        gangHupaiInfo.setTarget(seatIndex);
 //	    }else 
 	    if(game.getChuPai() == -1){
-	        hupai = seatData.getHolds().get(seatData.getHolds().size() - 1);
+	        hupai = seatData.getHoldsPai().get(seatData.getHoldsPai().size() - 1);
 	        seatData.rePaiCount(hupai,1);
 	        huPaiInfo.setPai(hupai);
 	        if(huPaiInfo.isGangHu()){

@@ -1,4 +1,4 @@
-package com.test;
+package com.naqi.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,9 +20,14 @@ public class HuPaiTest {
 		GameSeat gameSeat = new GameSeat(tableSeat);
 		
 		Map<Integer, Integer> countMap = new HashMap<Integer, Integer>();
-		countMap.put(0, 3);
-		countMap.put(1, 3);
-		countMap.put(2, 3);
+		countMap.put(0, 1);
+		countMap.put(1, 1);
+		countMap.put(2, 1);
+		countMap.put(3, 1);
+		countMap.put(4, 1);
+		countMap.put(5, 1);
+		countMap.put(6, 1);
+		countMap.put(7, 1);
 		countMap.put(20, 1);
 		countMap.put(22, 1);
 		countMap.put(15, 2);
@@ -31,33 +36,35 @@ public class HuPaiTest {
 		
 		List<Integer> holds = new ArrayList<>();
 		holds.add(0);
-		holds.add(0);
-		holds.add(0);
-		holds.add(1);
-		holds.add(1);
 		holds.add(1);
 		holds.add(2);
-		holds.add(2);
-		holds.add(2);
-		holds.add(27);
-		holds.add(28);
+		holds.add(3);
+		holds.add(4);
+		holds.add(5);
+		holds.add(6);
+		holds.add(7);
+		holds.add(20);
+		holds.add(22);
 		holds.add(15);
 		holds.add(15);
 		holds.add(21);
 		gameSeat.setHolds(holds);
+		System.out.println(gameSeat.getCountMap());
+//		JiaHu jiaHu = new JiaHu();
+//		boolean canHu = jiaHu.check(gameSeat, 8);
 		
-		JiaHu jiaHu = new JiaHu();
-		boolean canHu = jiaHu.check(gameSeat, -1);
-		System.out.println(canHu + " : " + gameSeat.getTingPai().getType());
-		DuiDuiHu duiduiHu = new DuiDuiHu();
-		canHu = duiduiHu.check(gameSeat, 29);
-		System.out.println(canHu);
-		Hu7Pairs hu7Pairs = new Hu7Pairs();
-		canHu = hu7Pairs.check(gameSeat, 29);
-		System.out.println(canHu);
+		boolean canHu = false;
+//		System.out.println(canHu + " : " + gameSeat.getTingPai().getType());
+//		DuiDuiHu duiduiHu = new DuiDuiHu();
+//		canHu = duiduiHu.check(gameSeat, 8);
+//		System.out.println(canHu);
+//		Hu7Pairs hu7Pairs = new Hu7Pairs();
+//		canHu = hu7Pairs.check(gameSeat, 8);
+//		System.out.println(canHu);
 		YiTiaoLong yiTiaoLong = new YiTiaoLong();
-		canHu = yiTiaoLong.check(gameSeat, 29);
+		canHu = yiTiaoLong.check(gameSeat, 8);
 		System.out.println(canHu);
+		System.out.println(gameSeat.getCountMap());
 	}
 	
 }

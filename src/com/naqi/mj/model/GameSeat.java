@@ -100,9 +100,33 @@ public class GameSeat {
 	public void setReady(boolean ready) {
 		this.ready = ready;
 	}
-	public List<Integer> getHolds() {
-		return holds;
+//	public List<Integer> getHolds() {
+//		return holds;
+//	}
+	
+	public void removeHoldsLast(){
+		holds.remove(holds.size() - 1);
+		System.out.println(getIndex() +"--22--" + holds.size());
 	}
+
+	public void removeHolds(int index){
+		holds.remove(index);
+		System.out.println(getIndex() +"--223--" + holds.size());
+	}
+	
+	public void addHolds(int index , int pai){
+		holds.add(index, pai);
+		System.out.println(getIndex() +"--2--" + holds.size());
+	}
+	public void addholds(int pai){
+		holds.add(pai);
+		System.out.println(getIndex() +"--1--" + holds.size());
+	}
+
+	public List<Integer> getHoldsPai(){
+		return this.holds;
+	}
+	
 	public void setHolds(List<Integer> holds) {
 		this.holds = holds;
 	}
@@ -359,5 +383,8 @@ public class GameSeat {
 	}
 	public void setTingPai(TingPai tingPai) {
 		this.tingPai = tingPai;
+	}
+	public int getHoldLast() {
+		return holds.get(holds.size() - 1);
 	}
 }

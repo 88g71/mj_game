@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.naqi.mj.model.GameSeat;
@@ -11,10 +13,11 @@ import com.naqi.mj.model.TingPai;
 import com.naqi.mj.service.dq.ITingExtension;
 @Service(value ="DuiDuiHu")
 public class DuiDuiHu implements ITingExtension{
-
+	private static Logger logger = LoggerFactory.getLogger(DuiDuiHu.class);
 	private static final int SCORE = 6;
 	@Override
 	public boolean check(GameSeat gameSeat,int pai) {
+		logger.info("duiduihu  用户名{}   牌 {}",gameSeat.getTableSeat().getUserName() , gameSeat.getHoldsPai());
 		Map<Integer,Integer> countMap = gameSeat.getCountMap();
 	    
 
