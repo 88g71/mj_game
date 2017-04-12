@@ -23,7 +23,7 @@ public class HuPaiInfo {
 	private int action;				//胡牌类型
 	private boolean zimo;			//自摸
 	private int target = -1;		//点炮手
-	private int fan;				//翻倍
+	private int fan = 1;				//翻倍
 	private boolean gangHu;			//杠花
 	private boolean qiangGangHu;	//抢杠
 	private String pattern;			//说明

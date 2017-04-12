@@ -12,8 +12,6 @@ import java.util.Map;
  */
 public class GameSeat {
 	//-------------------------
-	//每局信息
-	private boolean ready;
     //持有的牌
     private List<Integer> holds = new ArrayList<Integer>();
     //打出的牌
@@ -94,16 +92,6 @@ public class GameSeat {
     }
     
     
-	public boolean isReady() {
-		return ready;
-	}
-	public void setReady(boolean ready) {
-		this.ready = ready;
-	}
-//	public List<Integer> getHolds() {
-//		return holds;
-//	}
-	
 	public void removeHoldsLast(){
 		holds.remove(holds.size() - 1);
 		System.out.println(getIndex() +"--22--" + holds.size());
@@ -115,10 +103,17 @@ public class GameSeat {
 	}
 	
 	public void addHolds(int index , int pai){
+		if(pai == -1){
+			System.out.println();
+		}
+		
 		holds.add(index, pai);
 		System.out.println(getIndex() +"--2--" + holds.size());
 	}
 	public void addholds(int pai){
+		if(pai == -1){
+			System.out.println();
+		}
 		holds.add(pai);
 		System.out.println(getIndex() +"--1--" + holds.size());
 	}
@@ -165,78 +160,6 @@ public class GameSeat {
 	public int getPaiCount(int pai) {
 		Integer num = countMap.get(pai);
 		return num == null ? 0 : num;
-	}
-	
-	public void reset(){
-//		data.game = game;
-//
-//        data.seatIndex = i;
-//
-//        data.userId = seats[i].userId;
-//        //持有的牌
-//        data.holds = [];
-//        //打出的牌
-//        data.folds = [];
-//        //暗杠的牌
-//        data.angangs = [];
-//        //点杠的牌
-//        data.diangangs = [];
-//        //弯杠的牌
-//        data.wangangs = [];
-//        //碰了的牌
-//        data.pengs = [];
-//        //缺一门
-//        data.que = -1;
-//
-//        //换三张的牌
-//        data.huanpais = null;
-//
-//        //玩家手上的牌的数目，用于快速判定碰杠
-//        data.countMap = {};
-//        //玩家听牌，用于快速判定胡了的番数
-//        data.tingMap = {};
-//        data.pattern = "";
-//
-//        //是否可以杠
-//        data.canGang = false;
-//        //用于记录玩家可以杠的牌
-//        data.gangPai = [];
-//
-//        //是否可以碰
-//        data.canPeng = false;
-//        //是否可以胡
-//        data.canHu = false;
-//        //是否可以出牌
-//        data.canChuPai = false;
-//
-//        //如果guoHuFan >=0 表示处于过胡状态，
-//        //如果过胡状态，那么只能胡大于过胡番数的牌
-//        data.guoHuFan = -1;
-//
-//        //是否胡了
-//        data.hued = false;
-//        //
-//        data.actions = [];
-//
-//        //是否是自摸
-//        data.iszimo = false;
-//        data.isGangHu = false;
-//        data.fan = 0;
-//        data.score = 0;
-//        data.huInfo = [];
-//        
-//        
-//        data.lastFangGangSeat = -1;
-//        
-//        //统计信息
-//        data.numZiMo = 0;
-//        data.numJiePao = 0;
-//        data.numDianPao = 0;
-//        data.numAnGang = 0;
-//        data.numMingGang = 0;
-//        data.numChaJiao = 0;
-//
-//        gameSeatsOfUsers[data.userId] = data;
 	}
 	
 	public void setCountMap(Map<Integer, Integer> countMap) {
@@ -386,5 +309,57 @@ public class GameSeat {
 	}
 	public int getHoldLast() {
 		return holds.get(holds.size() - 1);
+	}
+	/**
+	 * 重置
+	 */
+	public void reset(){
+		//持有的牌
+	    holds.clear();
+	    //打出的牌
+	    folds.clear();
+	    //暗杠的牌
+	    angangs.clear();
+	    //点杠的牌
+	    diangangs.clear();
+	    //明杠的牌
+	    wangangs.clear();
+	    //碰了的牌
+	    pengs.clear();
+	    //玩家手上的牌的数目，用于快速判定碰杠
+	    countMap.clear();
+//	    //玩家听牌，用于快速判定胡了的番数
+//	    private Map<Integer,TingPai> tingMap = new HashMap<Integer,TingPai>();
+	    tingPai = new TingPai(0, "", -1, 0);
+
+	    //是否可以杠
+	    canGang = false;
+	    //用于记录玩家可以杠的牌
+	    gangPai.clear();
+	    //是否可以碰
+	    canPeng = false;
+	    //是否可以胡
+	    canHu = false;
+	    //是否可以出牌
+	    canChuPai = false;
+	    //是否胡了
+	    hued = false;
+	    //
+	    actions.clear();
+
+	    //是否是自摸
+	    iszimo = false;
+	    isGangHu = false;
+	    fan = 0;
+	    score = 0;
+//	    private HuPaiInfo huInfo = new HuPaiInfo();
+	    
+	    lastFangGangSeat = -1;
+	    //------------------------------------------------------------
+	    //统计信息
+	    numZiMo = 0;
+	    numDianPao = 0;
+	    numAnGang = 0;
+	    numMingGang = 0;
 	}
 }
